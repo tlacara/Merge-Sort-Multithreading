@@ -166,14 +166,16 @@ A: Array Size 10: Single Thread: 00.00, Multi Thread: 00.34
    Array Size 100000000: SIngle Thread: 1:12.38, Multi Thread: 1:25.61
 
 2. How much speed-up were you expecting based on the number of processors/cores on your machine?
-3. 
+
 A. My machine has 2 cores and 4 processors so I was expecting a speed up factor of roughly 5.
 
 3. Did you achieve the speed-up you expected?  If not, what do you think might be interfering with this?
+
 A. I did not achieve the speed-up I was expecting, this could be due to my algorithm no being optimized or my multi thread methods simply not working as expected.
 
 
 5. In your parallel implementation, try different number of threads for an array size of million elements. Observe the speed up factor as a function of thread size, i.e. speed-up factor (Y-axis) for #threads increasing (X-axis). Summarize your results in a table in your README file in the repo.
+
 A. Not sure how to do this since y multithread gives roughly the same time results as singlthread.
 
 
