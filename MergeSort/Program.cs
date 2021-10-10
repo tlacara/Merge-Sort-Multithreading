@@ -10,8 +10,8 @@ namespace MergeSort
         static void Main(string[] args)
         {
 
-            int ARRAY_SIZE = 100;
-            int NUM_THREADS = 4;
+            int ARRAY_SIZE = 10000;
+            int NUM_THREADS = 10;
 
             int[] arraySingleThread = new int[ARRAY_SIZE];
 
@@ -20,7 +20,9 @@ namespace MergeSort
 
 
 
-            Stopwatch stopwatch = new Stopwatch();
+            Stopwatch single_stopwatch = new Stopwatch();
+            Stopwatch multi_stopwatch = new Stopwatch();
+
 
             // TODO : Use the "Random" class in a for loop to initialize an array
             Random rand = new Random();
@@ -43,60 +45,79 @@ namespace MergeSort
 
 
             //TODO :start the stopwatch
-            stopwatch.Start();
+            single_stopwatch.Start();
             MergeSort(arraySingleThread);
 
+            //TODO :Stop the stopwatch
+            single_stopwatch.Stop();
+
+            TimeSpan ts = single_stopwatch.Elapsed;
+
+            Console.WriteLine("Single Thread");
             PrintArray(arraySingleThread);
             Console.WriteLine(IsSorted(arraySingleThread));
 
-            //TODO :Stop the stopwatch
-            stopwatch.Stop();
-
-            TimeSpan ts = stopwatch.Elapsed;
-
-            string elapsedTime = String.Format("{0:00}.{1:00}", ts.Seconds, ts.Milliseconds / 10);
+            string elapsedTime = String.Format("{0:00}.{1:00}", ts.Seconds, ts.Milliseconds/10);
             Console.WriteLine("RunTime " + elapsedTime);
 
+            Console.WriteLine();
 
             //TODO: Multi Threading Merge Sort
 
-            //splits array into subarrays
+            Console.WriteLine("Multi Threaded");
 
-            int num_array = ARRAY_SIZE / NUM_THREADS;
+            multi_stopwatch.Start();
 
-            List<int[]> subarrays = new List<int[]>();
-            Thread[] th = new Thread[NUM_THREADS];
+            MultiMerge(arrayMultiThread,NUM_THREADS,ARRAY_SIZE);
 
-            for (int i = 0; i < arrayMultiThread.Length; i = i + num_array)
-            {
-                int[] sub = new int[num_array];
-                if (arrayMultiThread.Length < i + num_array)
-                {
-                    NUM_THREADS = arrayMultiThread.Length - i;
-                }
-                Array.Copy(arrayMultiThread, i, sub, 0, num_array);
-                subarrays.Add(sub);
-            }
+            multi_stopwatch.Stop();
 
-            for (int i = 0; i < NUM_THREADS; i++)
-            {
-                int j = i;
-                th[j] = new Thread(() => MergeSort(subarrays[j]));
-                th[j].Start();
-                th[i].Join();
-            }
+            TimeSpan ts1 = multi_stopwatch.Elapsed;
 
-            //for (int i=0;i<NUM_THREADS;i++)
+            string elapsedTime1 = String.Format("{0:00}.{1:00}", ts1.Seconds, ts1.Milliseconds/10);
+            Console.WriteLine("Runtime " + elapsedTime1);
+
+
+            //int num_array = ARRAY_SIZE / NUM_THREADS;
+
+            //List<int[]> subarrays = new List<int[]>();
+            //Thread[] th = new Thread[NUM_THREADS];
+
+            ////splits array into subarrays
+
+            //for (int i = 0; i < arrayMultiThread.Length; i = i + num_array)
             //{
-            //    Merge(th[i],th[i+1],arrayMultiThread)
+            //    int[] sub = new int[num_array];
+            //    if (arrayMultiThread.Length < i + num_array)
+            //    {
+            //        NUM_THREADS = arrayMultiThread.Length - i;
+            //    }
+            //    Array.Copy(arrayMultiThread, i, sub, 0, num_array);
+            //    subarrays.Add(sub);
             //}
-           
+
+            ////sorts the subarrays in dedicated threads
+
             //for (int i = 0; i < NUM_THREADS; i++)
             //{
-                
+            //    int j = i;
+            //    th[j] = new Thread(() => MergeSort(subarrays[j]));
+            //    th[j].Start();
+            //    th[i].Join();
             //}
 
+            ////merges the subarrays into sorted array
+            
+            //int[] temp = subarrays[0];
+            //for (int i = 1; i < NUM_THREADS; i++)
+            //{
+            //    int[] A = new int[temp.Length + subarrays[i].Length];
+            //    Merge(temp, subarrays[i],A);
+            //    temp = A;
+            //}
 
+            //PrintArray(temp);
+            //Console.WriteLine(IsSorted(temp));
 
 
 
@@ -209,9 +230,53 @@ namespace MergeSort
                 return i > j;
             }
 
+            static void MultiMerge(int[] arrayMultiThread,int NUM_THREADS,int ARRAY_SIZE)
+            {
+                int num_array = ARRAY_SIZE / NUM_THREADS;
+
+                List<int[]> subarrays = new List<int[]>();
+                Thread[] th = new Thread[NUM_THREADS];
+
+                //splits array into subarrays
+
+                for (int i = 0; i < arrayMultiThread.Length; i = i + num_array)
+                {
+                    int[] sub = new int[num_array];
+                    if (arrayMultiThread.Length < i + num_array)
+                    {
+                        NUM_THREADS = arrayMultiThread.Length - i;
+                    }
+                    Array.Copy(arrayMultiThread, i, sub, 0, num_array);
+                    subarrays.Add(sub);
+                }
+
+                //sorts the subarrays in dedicated threads
+
+                for (int i = 0; i < NUM_THREADS; i++)
+                {
+                    int j = i;
+                    th[j] = new Thread(() => MergeSort(subarrays[j]));
+                    th[j].Start();
+                    th[i].Join();
+                }
+
+                //merges the subarrays into sorted array
+
+                int[] temp = subarrays[0];
+                for (int i = 1; i < NUM_THREADS; i++)
+                {
+                    int[] A = new int[temp.Length + subarrays[i].Length];
+                    Merge(temp, subarrays[i], A);
+                    temp = A;
+                }
+
+                PrintArray(temp);
+                Console.WriteLine(IsSorted(temp));
+            }
+
 
         }
-
+            
 
     }
 }
