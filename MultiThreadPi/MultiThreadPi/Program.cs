@@ -7,25 +7,25 @@ namespace MultiThreadPi
         static void Main(string[] args)
         {
             long numberOfSamples = 1000;
-            long hits=0;
+            long hits = 0 ;
             
             double pi = EstimatePI(numberOfSamples, ref hits);
 
-            Console.WriteLine(pi);
+           Console.WriteLine(pi);
 
            
         }
          static double EstimatePI(long numberOfSamples, ref long hits)
         {
             //implement
-            hits = 0;
+            
             double prob;
             double[,] val = new double[numberOfSamples,2];
             val = GenerateSamples(numberOfSamples);
 
             for(int i = 0; i < numberOfSamples; i++)
             {
-                for (int j = 0; j < 2; j++)
+                for (int j = 0; j < 1; j++)
                 {
                     if (val[i, j] * val[i, j] + val[i, j + 1] * val[i, j + 1] <= 1)
                     {
@@ -34,7 +34,7 @@ namespace MultiThreadPi
                     
                 }
             }
-            prob = hits / numberOfSamples;
+            prob = (double)hits / numberOfSamples;
             return prob * 4;
         }
 

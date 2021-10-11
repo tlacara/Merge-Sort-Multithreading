@@ -10,7 +10,7 @@ namespace MergeSort
         static void Main(string[] args)
         {
 
-            int ARRAY_SIZE = 1000000000;
+            int ARRAY_SIZE = 100000;
             int NUM_THREADS = 10;
 
             int[] arraySingleThread = new int[ARRAY_SIZE];
