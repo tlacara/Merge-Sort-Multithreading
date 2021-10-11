@@ -10,7 +10,7 @@ namespace MergeSort
         static void Main(string[] args)
         {
 
-            int ARRAY_SIZE = 10000;
+            int ARRAY_SIZE = 1000000000;
             int NUM_THREADS = 10;
 
             int[] arraySingleThread = new int[ARRAY_SIZE];
@@ -54,10 +54,10 @@ namespace MergeSort
             TimeSpan ts = single_stopwatch.Elapsed;
 
             Console.WriteLine("Single Thread");
-            PrintArray(arraySingleThread);
+            //PrintArray(arraySingleThread);
             Console.WriteLine(IsSorted(arraySingleThread));
 
-            string elapsedTime = String.Format("{0:00}.{1:00}", ts.Seconds, ts.Milliseconds/10);
+            string elapsedTime = String.Format("{0:00}:{1:00}.{2:00}",ts.Minutes, ts.Seconds, ts.Milliseconds/10);
             Console.WriteLine("RunTime " + elapsedTime);
 
             Console.WriteLine();
@@ -74,55 +74,8 @@ namespace MergeSort
 
             TimeSpan ts1 = multi_stopwatch.Elapsed;
 
-            string elapsedTime1 = String.Format("{0:00}.{1:00}", ts1.Seconds, ts1.Milliseconds/10);
+            string elapsedTime1 = String.Format("{0:00}:{1:00}.{2:00}",ts1.Minutes, ts1.Seconds, ts1.Milliseconds/10);
             Console.WriteLine("Runtime " + elapsedTime1);
-
-
-            //int num_array = ARRAY_SIZE / NUM_THREADS;
-
-            //List<int[]> subarrays = new List<int[]>();
-            //Thread[] th = new Thread[NUM_THREADS];
-
-            ////splits array into subarrays
-
-            //for (int i = 0; i < arrayMultiThread.Length; i = i + num_array)
-            //{
-            //    int[] sub = new int[num_array];
-            //    if (arrayMultiThread.Length < i + num_array)
-            //    {
-            //        NUM_THREADS = arrayMultiThread.Length - i;
-            //    }
-            //    Array.Copy(arrayMultiThread, i, sub, 0, num_array);
-            //    subarrays.Add(sub);
-            //}
-
-            ////sorts the subarrays in dedicated threads
-
-            //for (int i = 0; i < NUM_THREADS; i++)
-            //{
-            //    int j = i;
-            //    th[j] = new Thread(() => MergeSort(subarrays[j]));
-            //    th[j].Start();
-            //    th[i].Join();
-            //}
-
-            ////merges the subarrays into sorted array
-            
-            //int[] temp = subarrays[0];
-            //for (int i = 1; i < NUM_THREADS; i++)
-            //{
-            //    int[] A = new int[temp.Length + subarrays[i].Length];
-            //    Merge(temp, subarrays[i],A);
-            //    temp = A;
-            //}
-
-            //PrintArray(temp);
-            //Console.WriteLine(IsSorted(temp));
-
-
-
-
-
 
 
 
@@ -257,6 +210,11 @@ namespace MergeSort
                     int j = i;
                     th[j] = new Thread(() => MergeSort(subarrays[j]));
                     th[j].Start();
+                    //th[i].Join();
+                }
+
+                for(int i = 0; i < NUM_THREADS; i++)
+                {
                     th[i].Join();
                 }
 
@@ -270,8 +228,8 @@ namespace MergeSort
                     temp = A;
                 }
 
-                PrintArray(temp);
-                Console.WriteLine(IsSorted(temp));
+                //PrintArray(temp);
+                //Console.WriteLine(IsSorted(temp));
             }
 
 
