@@ -10,15 +10,13 @@ namespace MergeSort
         static void Main(string[] args)
         {
 
-            int ARRAY_SIZE = 100000;
+            int ARRAY_SIZE = 1000000;
             int NUM_THREADS = 10;
 
             int[] arraySingleThread = new int[ARRAY_SIZE];
 
             int min = 0;
             int max = ARRAY_SIZE;
-
-
 
             Stopwatch single_stopwatch = new Stopwatch();
             Stopwatch multi_stopwatch = new Stopwatch();
@@ -210,7 +208,7 @@ namespace MergeSort
                     int j = i;
                     th[j] = new Thread(() => MergeSort(subarrays[j]));
                     th[j].Start();
-                    //th[i].Join();
+                    
                 }
 
                 for(int i = 0; i < NUM_THREADS; i++)
