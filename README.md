@@ -238,6 +238,8 @@ namespace pi
 
 How accurate is your PI estimate with only 1000 random samples?  How many samples do you need to be accurate to 3 decimal places?
 
+A: with 1000 samples I got an estimate of 3.084 which is 98% accurate.To be accurate to 3 decimal places,I needed 100000 samples.
+
 #### Speeding up the computation
 
 One way to try to speed things up is to generate and check each random sample in a separate thread (**WARNING:** *use a very small number of samples, such as 1000).  Each sample is independent of each other, so we should be able to perform our sampling in parallel. Note that the number of *hits* between threads is the critical section of the code and needs to be protected during the parallel processing. Feel free to use MutEx or other locking mechanisms you learned in the lecture.
